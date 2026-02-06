@@ -5,7 +5,7 @@ logger = EventLogger()
 arr = VisualArray([3,1,2],logger)
 
 for i in range(len(arr)-1):
-    if arr.data[i]>arr.data[i+1]:
+    if arr.compare(i,i+1):
         arr.swap(i,i+1)
 
 print("Final array",arr.rawdata())

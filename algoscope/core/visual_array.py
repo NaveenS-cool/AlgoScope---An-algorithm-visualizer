@@ -16,9 +16,14 @@ class VisualArray:
         self.logger.log("write",index=index,value=value)
         self.data[index]=value
 
+    def compare(self,i,j):
+        self.logger.log("compare",i=i,j=j)
+        return (self.data[i]>self.data[j])
+
     def swap(self,i,j):
         self.logger.log("swap",i=i,j=j)
         self.data[i],self.data[j] = self.data[j],self.data[i]
+
 
     def rawdata(self):
         """For debugging"""
