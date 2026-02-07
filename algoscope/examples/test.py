@@ -1,12 +1,17 @@
 from core.events import EventLogger
 from core.visual_array import VisualArray
+from core.pointers import Pointer
 
 logger = EventLogger()
 arr = VisualArray([3,1,2],logger)
 
-for i in range(len(arr)-1):
-    if arr.compare(i,i+1):
-        arr.swap(i,i+1)
+i=Pointer("i",0,logger)
+
+while i.get() < len(arr)-1:
+    if arr.compare(i.get(),i.get()+1):
+        arr.swap(i.get(),i.get()+1)
+
+    i.move(i.get()+1)
 
 print("Final array",arr.rawdata())
 
