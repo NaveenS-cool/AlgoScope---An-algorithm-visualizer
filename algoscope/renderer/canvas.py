@@ -1,5 +1,6 @@
 import tkinter as tk
 from arrows import VisualPointer
+from array_view import VisualArrayView
 
 
 root = tk.Tk()
@@ -16,20 +17,8 @@ start_y=150
 
 values = [3,1,2]
 
-for i,value in enumerate(values):
+arr_view = VisualArrayView(canvas,values,start_x,start_y,box_width,box_height)
 
-    x1 = start_x + i*box_width
-    y1=start_y
-    x2=x1+box_width
-    y2= y1+box_height
-
-    canvas.create_rectangle(x1,y1,x2,y2)
-    canvas.create_text(
-        (x1+x2)/2,
-        (y1+y2)/2,
-        text = str(value),
-        font = ("Arial",14)
-    )
 arrow_x = start_x + box_width + box_width/2
 
 pointer = VisualPointer(canvas,"target",arrow_x,start_y)
