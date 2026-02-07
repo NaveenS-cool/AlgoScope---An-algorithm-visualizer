@@ -1,4 +1,5 @@
 import tkinter as tk
+from arrows import VisualPointer
 
 
 root = tk.Tk()
@@ -29,22 +30,29 @@ for i,value in enumerate(values):
         text = str(value),
         font = ("Arial",14)
     )
-arrow_x = start_x + box_width/2
+arrow_x = start_x + box_width + box_width/2
 
-canvas.create_line(
-    arrow_x,
-    start_y-40,
-    arrow_x,
-    start_y,
-    arrow=tk.LAST,
-    width=2
-)
+pointer = VisualPointer(canvas,"target",arrow_x,start_y)
 
-canvas.create_text(
-    arrow_x,
-    start_y-50,
-    text="pointer1",
-    font=("Arial",12)
-)
+
+def move_arrow_to(target_index,steps=20,delay=20):
+
+    current_coords = canvas.coords(pointer.arrow)
+    current_x = current_coords[0]
+
+    target_x = start_x + target_index*box_width + box_width/2
+    dx = (target_x - current_x)/steps
+
+    def step(count=0):
+        if count >= steps:
+            pointer.move_to(target_x,start_y)
+            return
+        pointer.move(dx,0)
+        root.after(delay,lambda:step(count+1))
+
+    step()
+
+move_arrow_to(2)
+
 
 root.mainloop()
