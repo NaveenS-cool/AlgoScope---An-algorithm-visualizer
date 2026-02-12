@@ -33,6 +33,31 @@ class VisualArrayView:
 
             self.boxes.append(rect)
             self.texts.append(text)
+    
+    def index_to_x(self, index):
+        return self.start_x + index * self.box_width + self.box_width / 2
+
+    def animate_swap(self, i, j, on_done, steps=20, delay=20):
+        text_i = self.texts[i]
+        text_j = self.texts[j]
+
+        xi, yi = self.canvas.coords(text_i)
+        xj, yj = self.canvas.coords(text_j)
+
+        dx_i = (xj - xi) / steps
+        dx_j = (xi - xj) / steps
+
+        def step(count=0):
+            if count >= steps:
+                self.texts[i], self.texts[j] = self.texts[j], self.texts[i]
+                on_done()
+                return
+            self.canvas.move(text_i, dx_i, 0)
+            self.canvas.move(text_j, dx_j, 0)
+            self.canvas.after(delay, lambda: step(count + 1))
+
+        step()
+
 
 
 
