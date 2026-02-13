@@ -35,6 +35,7 @@ class VisualPointer:
         def step(count=0):
             if count >= steps:
                 self.move_to(target_x, current_y)
+                print("Animation finished — calling on_done")
                 on_done()
                 return
             self.move(dx, 0)

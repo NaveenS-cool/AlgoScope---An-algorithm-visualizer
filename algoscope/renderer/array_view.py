@@ -28,11 +28,14 @@ class VisualArrayView:
                 (x1+x2)/2,
                 (y1+y2)/2,
                 text = str(value),
-                font = ("Arial",14)
+                font = ("Arial",14),
+                tags = ("value_text",)
             )
 
             self.boxes.append(rect)
             self.texts.append(text)
+
+            self.canvas.tag_raise("value_text")
     
     def index_to_x(self, index):
         return self.start_x + index * self.box_width + self.box_width / 2
@@ -57,6 +60,22 @@ class VisualArrayView:
             self.canvas.after(delay, lambda: step(count + 1))
 
         step()
+
+    def animate_compare(self,i,j,on_done,delay=400):
+
+        box_i = self.boxes[i]
+        box_j = self.boxes[j]
+
+        self.canvas.itemconfig(box_i,fill="yellow")
+        self.canvas.itemconfig(box_j,fill="yellow")
+
+        def reset():
+            self.canvas.itemconfig(box_i,fill="")
+            self.canvas.itemconfig(box_j,fill="")
+            on_done()
+
+        self.canvas.after(delay,reset)
+            
 
 
 

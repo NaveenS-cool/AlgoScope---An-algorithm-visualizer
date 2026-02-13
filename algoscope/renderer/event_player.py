@@ -1,4 +1,4 @@
-from arrows import VisualPointer
+from renderer.arrows import VisualPointer
 
 
 class EventPlayer:
@@ -7,6 +7,9 @@ class EventPlayer:
         self.array_view = array_view
         self.events = events
         self.root = root
+
+        self.paused=False
+        self.auto_play=True
 
         self.pointers = {}   # name -> VisualPointer
         self.current = 0     # event index
@@ -20,7 +23,19 @@ class EventPlayer:
 
     def next(self, delay=400):
         self.current += 1
-        self.root.after(delay, self.play)
+
+        if self.auto_play and not self.paused:
+            self.canvas.after(delay, self.play)
+
+    def pause(self):
+        self.paused=True
+    def resume(self):
+        if self.paused:
+            self.paused=False
+            self.play()
+    def step_forward(self):
+        if self.current< len(self.events):
+            self.play()
 
     def handle_event(self, event):
         etype = event["type"]
@@ -48,5 +63,14 @@ class EventPlayer:
             i = event["i"]
             j = event["j"]
             self.array_view.animate_swap(i, j, self.next)
+
+        elif etype=="compare":
+            i=event["i"]
+            j=event["j"]
+
+            self.array_view.animate_compare(i,j,self.next)
+
+        else:
+            self.next()
 
 
